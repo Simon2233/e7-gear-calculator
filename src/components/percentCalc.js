@@ -4,7 +4,6 @@ import Button from '@material-ui/core/Button';
 
 export default function PercentCalc(){
 	const [result, setResult] = useState(0);
-
 	const [stats, setStats] = useState({
 			atkPercent: 0,
 			defPercent: 0,
@@ -17,30 +16,28 @@ export default function PercentCalc(){
 	);
 
 	function calculate() {
-		setResult(parseInt(stats.atkPercent) + parseInt(stats.defPercent) + parseInt(stats.effPercent) + parseInt(stats.effresPercent) + parseInt(stats.speed) + parseInt(stats.critc) + parseInt(stats.critdmg))
+		setResult((parseInt(stats.atkPercent) || 0) + (parseInt(stats.defPercent) || 0) + (parseInt(stats.effPercent) || 0) + (parseInt(stats.effresPercent) || 0) + (parseInt(stats.speed)*2 || 0) + (parseInt(stats.critc)*1.5 || 0) + (parseInt(stats.critdmg) || 0));
+		console.log(stats);
 	}
 
 	function handleChange(event) {
-		const re = /^[0-9\b]+$/
 		const key = event.target.id
-		if (event.target.value === "" || re.test(event.target.value)) {
-			setStats((prevState) => {return({...prevState, [key]: event.target.value})})
-		}
+		setStats((prevState) => {return({...prevState, [key]: event.target.value})});
 	}
 
 	return (
 		<div className="calculator">
 			<form>
-				<TextField id="atkPercent" label="Atk %" variant="outlined" onChange={handleChange} />
-				<TextField id="defPercent" label="Def %" variant="outlined" onChange={e => setStats((prevState) => {return({...prevState,defPercent: e.target.value})})}/>
-				<TextField id="effPercent" label="Eff %" variant="outlined" onChange={e => setStats((prevState) => {return({...prevState,effPercent: e.target.value})})}/>
-				<TextField id="effresPercent" label="Eff Res %" variant="outlined" onChange={e => setStats((prevState) => {return({...prevState,effresPercent: e.target.value})})}/>
-				<TextField id="speed" label="Speed" variant="outlined" onChange={e => setStats((prevState) => {return({...prevState,speed: e.target.value})})}/>
-				<TextField id="critc" label="Crit Chance" variant="outlined" onChange={e => setStats((prevState) => {return({...prevState,critc: e.target.value})})}/>
-				<TextField id="critdmg" label="Crit Damage" variant="outlined" onChange={e => setStats((prevState) => {return({...prevState,critdmg: e.target.value})})}/>
+				<TextField id="atkPercent" label="Atk %" variant="outlined" type="number" onChange={handleChange} />
+				<TextField id="defPercent" label="Def %" variant="outlined" type="number" onChange={handleChange}/>
+				<TextField id="effPercent" label="Eff %" variant="outlined" type="number" onChange={handleChange}/>
+				<TextField id="effresPercent" label="Eff Res %" variant="outlined" type="number" onChange={handleChange}/>
+				<TextField id="speed" label="Speed" variant="outlined" type="number" onChange={handleChange}/>
+				<TextField id="critc" label="Crit Chance" variant="outlined" type="number" onChange={handleChange}/>
+				<TextField id="critdmg" label="Crit Damage" variant="outlined" type="number" onChange={handleChange}/>
 				<Button onClick={calculate} variant="contained">Calculate</Button>
 			</form>
-			<div className="result">{result}</div>
+			<div className="result">Gear Score = {result}</div>
 		</div>
 	);
 }
