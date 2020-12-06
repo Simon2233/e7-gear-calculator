@@ -1,4 +1,5 @@
 import './App.css';
+import CharacterSelector from './components/CharacterSelector.js'
 import Button from '@material-ui/core/Button';
 
 function App() {
@@ -9,6 +10,7 @@ function App() {
         <Button variant="contained" color="primary">
           Hello World
         </Button>
+        <CharacterSelector />
       </header>
     </div>
   );
