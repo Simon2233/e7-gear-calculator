@@ -2,8 +2,21 @@ import React, {Component, useState} from 'react';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import CharacterSelector from './CharacterSelector.js'
+import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    '& .MuiTextField-root': {
+      margin: theme.spacing(1),
+      width: '25ch',
+    },
+  },
+}));
 
 export default function PercentCalc(){
+  const classes = useStyles();
+
 	const [result, setResult] = useState(0);
 	const [stats, setStats] = useState({
 			atkPercent: 0,
@@ -27,7 +40,15 @@ export default function PercentCalc(){
 	}
 
 	function calculate() {
-		setResult((parseInt(stats.hpPercent) || 0) + (parseInt(stats.atkPercent) || 0) + (parseInt(stats.defPercent) || 0) + (parseInt(stats.effPercent) || 0) + (parseInt(stats.effresPercent) || 0) + (parseInt(stats.speed)*2 || 0) + (parseInt(stats.critc)*1.5 || 0) + (parseInt(stats.critdmg) || 0));
+		setResult(
+		  (parseInt(stats.atkPercent) || 0) +
+		  (parseInt(stats.hpPercent) || 0) +
+		  (parseInt(stats.defPercent) || 0) +
+		  (parseInt(stats.effPercent) || 0) +
+		  (parseInt(stats.effresPercent) || 0) +
+		  (parseInt(stats.speed)*2 || 0) +
+		  (parseInt(stats.critc)*1.5 || 0) +
+		  (parseInt(stats.critdmg) || 0));
 	}
 
 	function handleChange(event) {
@@ -37,19 +58,18 @@ export default function PercentCalc(){
 
 	return (
 		<div className="calculator">
-			<form>
-				<TextField id="atkPercent" label="Atk %" variant="outlined" type="number" onChange={handleChange} />
-				<TextField id="hpPercent" label="Hp %" variant="outlined" type="number" onChange={handleChange} />
-				<TextField id="defPercent" label="Def %" variant="outlined" type="number" onChange={handleChange}/>
-				<TextField id="effPercent" label="Eff %" variant="outlined" type="number" onChange={handleChange}/>
-				<TextField id="effresPercent" label="Eff Res %" variant="outlined" type="number" onChange={handleChange}/>
-				<TextField id="speed" label="Speed" variant="outlined" type="number" onChange={handleChange}/>
-				<TextField id="critc" label="Crit Chance" variant="outlined" type="number" onChange={handleChange}/>
-				<TextField id="critdmg" label="Crit Damage" variant="outlined" type="number" onChange={handleChange}/>
-				<Button onClick={calculate} variant="contained">Calculate</Button>
+			<form className={classes.root}>
+				<TextField id="atkPercent" label=<span><img src="https://assets.epicsevendb.com/_source/img/cm_icon_stat_att.png"/>Atk %</span> variant="outlined" type="number" onChange={handleChange} />
+				<TextField id="hpPercent" label=<span><img src="https://assets.epicsevendb.com/_source/img/cm_icon_stat_max_hp.png"/>HP %</span> variant="outlined" type="number" onChange={handleChange} />
+				<TextField id="defPercent" label=<span><img src="https://assets.epicsevendb.com/_source/img/cm_icon_stat_def.png"/>Def %</span> variant="outlined" type="number" onChange={handleChange}/>
+				<TextField id="effPercent" label=<span><img src="https://assets.epicsevendb.com/_source/img/cm_icon_stat_acc.png"/>Eff %</span> variant="outlined" type="number" onChange={handleChange}/>
+				<TextField id="effresPercent" label=<span><img src="https://assets.epicsevendb.com/_source/img/cm_icon_stat_res.png"/>Eff Res %</span> variant="outlined" type="number" onChange={handleChange}/>
+				<TextField id="speed" label=<span><img src="https://assets.epicsevendb.com/_source/img/cm_icon_stat_speed.png"/>Speed</span> variant="outlined" type="number" onChange={handleChange}/>
+				<TextField id="critc" label=<span><img src="https://assets.epicsevendb.com/_source/img/cm_icon_stat_cri.png"/>Crit Chance</span> variant="outlined" type="number" onChange={handleChange}/>
+				<TextField id="critdmg" label=<span><img src="https://assets.epicsevendb.com/_source/img/cm_icon_stat_cri_dmg.png"/>Crit Damage</span> variant="outlined" type="number" onChange={handleChange}/>
 			</form>
-			<div className="result">Gear Score = {result}</div>
-			<CharacterSelector onHeroDetailChange={setBase}/>
+      		<Button onClick={calculate} variant="contained">Calculate</Button>
+			<Typography variant="h4" className="result">Gear Score = {result}</Typography>
 		</div>
 	);
 }
