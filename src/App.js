@@ -4,8 +4,13 @@ import Button from '@material-ui/core/Button';
 import PercentCalc from './components/percentCalc'
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
+import { useEffect } from 'react';
 
 function App() {
+  useEffect(() => {
+     document.title = "E7 Kermit Calculator"
+  }, []);
+
   return (
     <div className="App">
       <header className="App-header">
