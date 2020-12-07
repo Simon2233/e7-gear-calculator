@@ -48,12 +48,11 @@ export default function PercentCalc(){
 	function calculate() {
 	  if ((stats.flatAtk || stats.flatDef || stats.flatHp) && !baseHp) {
 	    setError(true);
+	    return;
 	  } else {
 	    setError(false);
 	  }
-//		console.log((stats.flatAtk / BaseAtk) * 100);
-//		console.log((stats.flatDef / BaseDef) * 100);
-//		console.log((stats.flatHp / BaseHP) * 100);
+
 		setResult(Math.round(
 		  (parseInt(stats.atkPercent) || 0) +
 		  (parseInt(stats.hpPercent) || 0) +
@@ -63,9 +62,9 @@ export default function PercentCalc(){
 		  (parseInt(stats.speed)*2 || 0) +
 		  (Math.round(parseInt(stats.critc)*1.5) || 0) +
 		  (parseInt(stats.critdmg) || 0) +
-		  ((stats.flatAtk / baseAtk) * 100) +
-		  ((stats.flatDef / baseDef) * 100) +
-		  ((stats.flatHp / baseHp) * 100) || 0));
+		  ((stats.flatAtk / baseAtk) * 100 || 0) +
+		  ((stats.flatDef / baseDef) * 100 || 0) +
+		  ((stats.flatHp / baseHp) * 100 || 0)));
 	}
 
 	function handleChange(event) {
