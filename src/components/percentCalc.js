@@ -26,7 +26,10 @@ export default function PercentCalc(){
 			effresPercent: 0,
 			speed: 0,
 			critc: 0,
-			critdmg: 0
+			critdmg: 0,
+			flatAtk: 0,
+			flatHp: 0,
+			flatDef: 0
 		}
 	);
 	const [BaseHP, setBaseHP] = useState(0);
@@ -40,7 +43,10 @@ export default function PercentCalc(){
 	}
 
 	function calculate() {
-		setResult(
+		console.log((stats.flatAtk / BaseAtk) * 100);
+		console.log((stats.flatDef / BaseDef) * 100);
+		console.log((stats.flatHp / BaseHP) * 100);
+		setResult(Math.round(
 		  (parseInt(stats.atkPercent) || 0) +
 		  (parseInt(stats.hpPercent) || 0) +
 		  (parseInt(stats.defPercent) || 0) +
@@ -48,7 +54,10 @@ export default function PercentCalc(){
 		  (parseInt(stats.effresPercent) || 0) +
 		  (parseInt(stats.speed)*2 || 0) +
 		  (parseInt(stats.critc)*1.5 || 0) +
-		  (parseInt(stats.critdmg) || 0));
+		  (parseInt(stats.critdmg) || 0) +
+		  ((stats.flatAtk / BaseAtk) * 100) +
+		  ((stats.flatDef / BaseDef) * 100) +
+		  ((stats.flatHp / BaseHP) * 100) || 0));
 	}
 
 	function handleChange(event) {
@@ -62,6 +71,11 @@ export default function PercentCalc(){
 				<TextField id="atkPercent" label=<span><img src="https://assets.epicsevendb.com/_source/img/cm_icon_stat_att.png"/>Atk %</span> variant="outlined" type="number" onChange={handleChange} />
 				<TextField id="hpPercent" label=<span><img src="https://assets.epicsevendb.com/_source/img/cm_icon_stat_max_hp.png"/>HP %</span> variant="outlined" type="number" onChange={handleChange} />
 				<TextField id="defPercent" label=<span><img src="https://assets.epicsevendb.com/_source/img/cm_icon_stat_def.png"/>Def %</span> variant="outlined" type="number" onChange={handleChange}/>
+
+				<TextField id="flatAtk" label=<span><img src="https://assets.epicsevendb.com/_source/img/cm_icon_stat_att.png"/>Flat Atk</span> variant="outlined" type="number" onChange={handleChange} />
+				<TextField id="flatHp" label=<span><img src="https://assets.epicsevendb.com/_source/img/cm_icon_stat_max_hp.png"/>Flat HP</span> variant="outlined" type="number" onChange={handleChange} />
+				<TextField id="flatDef" label=<span><img src="https://assets.epicsevendb.com/_source/img/cm_icon_stat_def.png"/>Flat Def</span> variant="outlined" type="number" onChange={handleChange}/>
+
 				<TextField id="effPercent" label=<span><img src="https://assets.epicsevendb.com/_source/img/cm_icon_stat_acc.png"/>Eff %</span> variant="outlined" type="number" onChange={handleChange}/>
 				<TextField id="effresPercent" label=<span><img src="https://assets.epicsevendb.com/_source/img/cm_icon_stat_res.png"/>Eff Res %</span> variant="outlined" type="number" onChange={handleChange}/>
 				<TextField id="speed" label=<span><img src="https://assets.epicsevendb.com/_source/img/cm_icon_stat_speed.png"/>Speed</span> variant="outlined" type="number" onChange={handleChange}/>
@@ -69,6 +83,7 @@ export default function PercentCalc(){
 				<TextField id="critdmg" label=<span><img src="https://assets.epicsevendb.com/_source/img/cm_icon_stat_cri_dmg.png"/>Crit Damage</span> variant="outlined" type="number" onChange={handleChange}/>
 			</form>
       		<Button onClick={calculate} variant="contained">Calculate</Button>
+      		<CharacterSelector onHeroDetailChange={setBase} />
 			<Typography variant="h4" className="result">Gear Score = {result}</Typography>
 		</div>
 	);
