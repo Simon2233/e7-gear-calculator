@@ -5,7 +5,7 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from '@material-ui/core/TextField';
 import superagent from 'superagent'
 
-export default function CharacterSelector() {
+export default function CharacterSelector(props) {
   const [heroes, setHeroes] = useState([])
   const [selectedHeroId, setSelectedHeroId] = useState()
   const [heroDetails, setHeroDetails] = useState()
@@ -31,9 +31,11 @@ export default function CharacterSelector() {
 
       try {
         let response = await superagent.get(`https://api.epicsevendb.com/hero/${selectedHeroId}`)
+        let result = JSON.parse(response.text).results[0]
         console.log("Hero Details Response:")
         console.log(response)
-        setHeroDetails(JSON.parse(response.text).results[0])
+        setHeroDetails(result)
+        props.onHeroDetailChange(result.calculatedStatus.lv60SixStarNoAwaken.hp, result.calculatedStatus.lv60SixStarNoAwaken.def, result.calculatedStatus.lv60SixStarNoAwaken.atk)
       } catch(err) {
         console.log("Failed request for hero", selectedHeroId)
         throw err

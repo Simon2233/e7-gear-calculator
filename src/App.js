@@ -10,7 +10,6 @@ function App() {
 
         <h1>E7 Gear Calculator</h1>
         <PercentCalc/>
-        <CharacterSelector />
       </header>
     </div>
   );
