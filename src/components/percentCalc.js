@@ -32,20 +32,28 @@ export default function PercentCalc(){
 			flatDef: 0
 		}
 	);
-	const [BaseHP, setBaseHP] = useState(0);
-	const [BaseDef, setBaseDef] = useState(0);
-	const [BaseAtk, setBaseAtk] = useState(0);
+	const [baseHp, setBaseHp] = useState(0);
+	const [baseDef, setBaseDef] = useState(0);
+	const [baseAtk, setBaseAtk] = useState(0);
+
+	const [error, setError] = useState(false);
+
 
 	function setBase(hp, def, atk) {
-		setBaseHP(hp);
+		setBaseHp(hp);
 		setBaseDef(def);
 		setBaseAtk(atk);
 	}
 
 	function calculate() {
-		console.log((stats.flatAtk / BaseAtk) * 100);
-		console.log((stats.flatDef / BaseDef) * 100);
-		console.log((stats.flatHp / BaseHP) * 100);
+	  if ((stats.flatAtk || stats.flatDef || stats.flatHp) && !baseHp) {
+	    setError(true);
+	  } else {
+	    setError(false);
+	  }
+//		console.log((stats.flatAtk / BaseAtk) * 100);
+//		console.log((stats.flatDef / BaseDef) * 100);
+//		console.log((stats.flatHp / BaseHP) * 100);
 		setResult(Math.round(
 		  (parseInt(stats.atkPercent) || 0) +
 		  (parseInt(stats.hpPercent) || 0) +
@@ -55,9 +63,9 @@ export default function PercentCalc(){
 		  (parseInt(stats.speed)*2 || 0) +
 		  (parseInt(stats.critc)*1.5 || 0) +
 		  (parseInt(stats.critdmg) || 0) +
-		  ((stats.flatAtk / BaseAtk) * 100) +
-		  ((stats.flatDef / BaseDef) * 100) +
-		  ((stats.flatHp / BaseHP) * 100) || 0));
+		  ((stats.flatAtk / baseAtk) * 100) +
+		  ((stats.flatDef / baseDef) * 100) +
+		  ((stats.flatHp / baseHp) * 100) || 0));
 	}
 
 	function handleChange(event) {
@@ -82,9 +90,9 @@ export default function PercentCalc(){
 				<TextField id="critc" label=<span><img src="https://assets.epicsevendb.com/_source/img/cm_icon_stat_cri.png"/>Crit Chance</span> variant="outlined" type="number" onChange={handleChange}/>
 				<TextField id="critdmg" label=<span><img src="https://assets.epicsevendb.com/_source/img/cm_icon_stat_cri_dmg.png"/>Crit Damage</span> variant="outlined" type="number" onChange={handleChange}/>
 			</form>
-      		<Button onClick={calculate} variant="contained">Calculate</Button>
-      		<CharacterSelector onHeroDetailChange={setBase} />
-			<Typography variant="h4" className="result">Gear Score = {result}</Typography>
+      		<CharacterSelector onHeroDetailChange={setBase} error={error}/>
+      		<Button onClick={calculate} variant="contained" size='large'>Calculate</Button>
+			<Typography variant="h3" className="result">Gear Score = {result}</Typography>
 		</div>
 	);
 }

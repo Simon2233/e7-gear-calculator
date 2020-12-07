@@ -50,23 +50,25 @@ export default function CharacterSelector(props) {
       <Autocomplete
         id="combo-box-demo"
         onChange={(event, hero) => {
-          if (!hero) return;
+          if (!hero) {
+            props.onHeroDetailChange(0,0,0)
+            setSelectedHeroId();
+            setHeroDetails();
+            return;
+          }
           setSelectedHeroId(hero._id);
         }}
         options={heroes}
         getOptionLabel={(hero) => hero.name}
-        style={{ width: 300 }}
-        renderInput={(params) => <TextField {...params} label="Character" variant="outlined" />}
+        style={{ width: 300, margin: "auto"}}
+        renderInput={(params) => <TextField {...params} label="Character" variant="outlined" error={props.error} helperText="Required if gear has flat stats" />}
       />
       {heroDetails &&
-      <>
         <img src={`https://assets.epicsevendb.com/_source/face/${heroDetails.id}_s.png`} />
-        <Typography variant="h4">Lvl 60 six star awakened stats</Typography>
-        <Typography variant="h5">HP: {heroDetails.calculatedStatus ? heroDetails.calculatedStatus.lv60SixStarNoAwaken.hp : "Waiting"}</Typography>
-        <Typography variant="h5">SPD: {heroDetails.calculatedStatus ? heroDetails.calculatedStatus.lv60SixStarNoAwaken.spd : "Waiting"}</Typography>
-        <Typography variant="h5">ATK: {heroDetails.calculatedStatus ? heroDetails.calculatedStatus.lv60SixStarNoAwaken.atk : "Waiting"}</Typography>
-        <Typography variant="h5">DEF: {heroDetails.calculatedStatus ? heroDetails.calculatedStatus.lv60SixStarNoAwaken.def : "Waiting"}</Typography>
-      </>
+//        <Typography variant="h4">Lvl 60 six star awakened stats</Typography>
+//        <Typography variant="h5">HP: {heroDetails.calculatedStatus ? heroDetails.calculatedStatus.lv60SixStarNoAwaken.hp : "Waiting"}</Typography>
+//        <Typography variant="h5">ATK: {heroDetails.calculatedStatus ? heroDetails.calculatedStatus.lv60SixStarNoAwaken.atk : "Waiting"}</Typography>
+//        <Typography variant="h5">DEF: {heroDetails.calculatedStatus ? heroDetails.calculatedStatus.lv60SixStarNoAwaken.def : "Waiting"}</Typography>
       }
     </div>
   );
