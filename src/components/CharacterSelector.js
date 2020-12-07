@@ -35,7 +35,10 @@ export default function CharacterSelector(props) {
         console.log("Hero Details Response:")
         console.log(response)
         setHeroDetails(result)
-        props.onHeroDetailChange(result.calculatedStatus.lv60SixStarNoAwaken.hp, result.calculatedStatus.lv60SixStarNoAwaken.def, result.calculatedStatus.lv60SixStarNoAwaken.atk)
+        props.onHeroDetailChange(
+          result.calculatedStatus.lv60SixStarFullyAwakened.hp,
+          result.calculatedStatus.lv60SixStarFullyAwakened.def,
+          result.calculatedStatus.lv60SixStarFullyAwakened.atk)
       } catch(err) {
         console.log("Failed request for hero", selectedHeroId)
         throw err
@@ -65,10 +68,6 @@ export default function CharacterSelector(props) {
       />
       {heroDetails &&
         <img src={`https://assets.epicsevendb.com/_source/face/${heroDetails.id}_s.png`} />
-//        <Typography variant="h4">Lvl 60 six star awakened stats</Typography>
-//        <Typography variant="h5">HP: {heroDetails.calculatedStatus ? heroDetails.calculatedStatus.lv60SixStarNoAwaken.hp : "Waiting"}</Typography>
-//        <Typography variant="h5">ATK: {heroDetails.calculatedStatus ? heroDetails.calculatedStatus.lv60SixStarNoAwaken.atk : "Waiting"}</Typography>
-//        <Typography variant="h5">DEF: {heroDetails.calculatedStatus ? heroDetails.calculatedStatus.lv60SixStarNoAwaken.def : "Waiting"}</Typography>
       }
     </div>
   );
