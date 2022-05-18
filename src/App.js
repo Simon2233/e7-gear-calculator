@@ -1,6 +1,4 @@
 import './App.css';
-import CharacterSelector from './components/CharacterSelector.js'
-import Button from '@material-ui/core/Button';
 import PercentCalc from './components/percentCalc'
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';

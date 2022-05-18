@@ -1,22 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from '@material-ui/core/TextField';
 import superagent from 'superagent'
 
 export default function CharacterSelector(props) {
   const [heroes, setHeroes] = useState([])
-  const [selectedHeroId, setSelectedHeroId] = useState()
-  const [heroDetails, setHeroDetails] = useState()
+  const [selectedHero, setSelectedHero] = useState()
 
   useEffect(async () => {
     async function getHeroes() {
       try {
-        let response = await superagent.get('https://api.epicsevendb.com/hero')
-        console.log("Heroes Response:")
-        console.log(response)
-        setHeroes(JSON.parse(response.text).results)
+        let response = await superagent.get('https://epic7x.com/characters/').set('Accept', 'text/html')
+        
+        let heroes = response.text.match("var CHARACTERS = (\\[.*\\])")[1];
+
+        console.log("Heroes Response:");
+        console.log(heroes);
+        setHeroes(JSON.parse(heroes))
       } catch(err) {
         console.log("Failed request for heroes")
         throw err
@@ -25,28 +25,6 @@ export default function CharacterSelector(props) {
     getHeroes()
   }, [])
 
-  useEffect(async () => {
-    async function getHeroDetails() {
-      if (!selectedHeroId) return;
-
-      try {
-        let response = await superagent.get(`https://api.epicsevendb.com/hero/${selectedHeroId}`)
-        let result = JSON.parse(response.text).results[0]
-        console.log("Hero Details Response:")
-        console.log(response)
-        setHeroDetails(result)
-        props.onHeroDetailChange(
-          result.calculatedStatus.lv60SixStarFullyAwakened.hp,
-          result.calculatedStatus.lv60SixStarFullyAwakened.def,
-          result.calculatedStatus.lv60SixStarFullyAwakened.atk)
-      } catch(err) {
-        console.log("Failed request for hero", selectedHeroId)
-        throw err
-      }
-    }
-
-    getHeroDetails()
-  }, [selectedHeroId])
 
   return (
     <div>
@@ -55,19 +33,30 @@ export default function CharacterSelector(props) {
         onChange={(event, hero) => {
           if (!hero) {
             props.onHeroDetailChange(0,0,0)
-            setSelectedHeroId();
-            setHeroDetails();
+            setSelectedHero();
             return;
           }
-          setSelectedHeroId(hero._id);
-        }}
+          setSelectedHero(hero);
+
+	      props.onHeroDetailChange(
+	        hero.stats.health,
+	        hero.stats.defense,
+	        hero.stats.attack)
+	      }}
         options={heroes}
         getOptionLabel={(hero) => hero.name}
         style={{ width: 300, margin: "auto"}}
         renderInput={(params) => <TextField {...params} label="Character" variant="outlined" error={props.error} helperText="Required if gear has flat stats" />}
       />
-      {heroDetails &&
-        <img src={`https://assets.epicsevendb.com/_source/face/${heroDetails.id}_s.png`} />
+      {selectedHero &&
+      	<div style={{'display': 'flex', 'justify-content': 'center', 'align-items': 'center'}}>
+          <img src={selectedHero.icon} style={{'borderRadius': '50%'}}/>
+          <div>
+	          <div><b>HP</b>: {selectedHero.stats.health}</div>
+	          <div><b>DEF</b>: {selectedHero.stats.defense}</div>
+	          <div><b>ATK</b>: {selectedHero.stats.attack}</div>
+          </div>
+        </div>
       }
     </div>
   );
