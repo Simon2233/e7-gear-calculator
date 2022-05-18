@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import CharacterSelector from './CharacterSelector.js'
@@ -38,6 +38,9 @@ export default function PercentCalc(){
 
 	const [error, setError] = useState(false);
 
+	useEffect(() => {
+		calculate()
+	}, [stats, baseHp, baseDef, baseAtk])
 
 	function setBase(hp, def, atk) {
 		setBaseHp(hp);
@@ -45,13 +48,17 @@ export default function PercentCalc(){
 		setBaseAtk(atk);
 	}
 
-	function calculate() {
+	function checkFlatAndHero() {
 	  if ((stats.flatAtk || stats.flatDef || stats.flatHp) && !baseHp) {
 	    setError(true);
 	    return;
 	  } else {
 	    setError(false);
 	  }
+	}
+
+	function calculate() {
+		checkFlatAndHero();
 
 		setResult(Math.round(
 		  (parseInt(stats.atkPercent) || 0) +
@@ -62,9 +69,10 @@ export default function PercentCalc(){
 		  (parseInt(stats.speed)*2 || 0) +
 		  (Math.round(parseInt(stats.critc)*1.5) || 0) +
 		  (parseInt(stats.critdmg) || 0) +
-		  ((stats.flatAtk / baseAtk) * 100 || 0) +
-		  ((stats.flatDef / baseDef) * 100 || 0) +
-		  ((stats.flatHp / baseHp) * 100 || 0)));
+		  (baseAtk ? (stats.flatAtk / baseAtk) * 100 || 0 : 0) +
+		  (baseDef ? (stats.flatDef / baseDef) * 100 || 0 : 0) +
+		  (baseHp ? (stats.flatHp / baseHp) * 100 || 0 : 0)
+		));
 	}
 
 	function handleChange(event) {
@@ -90,7 +98,6 @@ export default function PercentCalc(){
 				<TextField id="critdmg" label=<span><img src="https://assets.epicsevendb.com/_source/img/cm_icon_stat_cri_dmg.png"/>Crit Damage</span> variant="outlined" type="number" onChange={handleChange}/>
 			</form>
       		<CharacterSelector onHeroDetailChange={setBase} error={error}/>
-      		<Button onClick={calculate} variant="contained" size='large'>Calculate</Button>
 			<Typography variant="h3" className="result">Gear Score = {result}</Typography>
 		</div>
 	);

@@ -50,7 +50,7 @@ export default function CharacterSelector(props) {
       />
       {selectedHero &&
       	<div style={{'display': 'flex', 'justify-content': 'center', 'align-items': 'center'}}>
-          <img src={selectedHero.icon} style={{'borderRadius': '50%'}}/>
+          <img src={selectedHero.icon} style={{'borderRadius': '50%', 'height': '100px'}}/>
           <div>
 	          <div><b>HP</b>: {selectedHero.stats.health}</div>
 	          <div><b>DEF</b>: {selectedHero.stats.defense}</div>
