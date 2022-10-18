@@ -67,8 +67,8 @@ export default function PercentCalc(){
 		  (parseInt(stats.effPercent) || 0) +
 		  (parseInt(stats.effresPercent) || 0) +
 		  (parseInt(stats.speed)*2 || 0) +
-		  (Math.round(parseInt(stats.critc)*1.5) || 0) +
-		  (parseInt(stats.critdmg) || 0) +
+		  (Math.round(parseInt(stats.critc)*1.6) || 0) +
+		  (Math.round(parseInt(stats.critdmg)*1.1) || 0) +
 		  (baseAtk ? (stats.flatAtk / baseAtk) * 100 || 0 : 0) +
 		  (baseDef ? (stats.flatDef / baseDef) * 100 || 0 : 0) +
 		  (baseHp ? (stats.flatHp / baseHp) * 100 || 0 : 0)
